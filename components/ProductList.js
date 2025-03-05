@@ -1,46 +1,37 @@
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import ProductCard from './ProductCard';
 
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import ProductCard from "./ProductCard";
+export default function ProductList({ searchQuery, showFavorites = false }) {
+    const products = [
+        { id: "1", title: "Example Product 1", image: "https://via.placeholder.com/150" },
+        { id: "2", title: "Example Product 2", image: "https://via.placeholder.com/150" }
+    ]; // Replace with real API data if available.
 
-
-const ProductList = ({ products, onAddToFavorites, onRemoveFromFavorites, setFavorites, isFavoritesList }) => {
-
-    const handleRemoveFromFavorites = (productToRemove) => {
-        console.log("hi it's lilly, what's happening");
-        console.log(productToRemove);
-        console.log(products);
-        console.log(setFavorites);
-        console.log("hi it's lilly, oh no")
-        setFavorites((prevFavorites) => {
-            console.log("we are inside setfavorites");
-            console.log(prevFavorites);
-            console.log(productToRemove);
-            console.log("oh how fun");
-            return prevFavorites.filter((product) => product.asin !== productToRemove);
-        });
-    };
+    if (!products || products.length === 0) {
+        return (
+            <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No products found</Text>
+            </View>
+        );
+    }
 
     return (
-        <View style={styles.container}>
-            {products.map((product) => (
-                <ProductCard
-                    key={product.asin}
-                    product={product}
-                    setFavorites={setFavorites}
-                    onAddToFavorites={onAddToFavorites}
-                    onRemoveFromFavorites={handleRemoveFromFavorites} // Use the handleRemoveFromFavorites function
-                    isFavoritesList={isFavoritesList}
-                />
-            ))}
-        </View>
+        <FlatList
+            data={products}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <ProductCard product={item} />}
+        />
     );
-};
+}
 
 const styles = StyleSheet.create({
-    container: {
-        marginVertical: 10,
+    emptyContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+    },
+    emptyText: {
+        fontSize: 16,
+        color: "#555",
     },
 });
-
-export default ProductList;
