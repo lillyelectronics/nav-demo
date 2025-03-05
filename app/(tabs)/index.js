@@ -1,7 +1,25 @@
-import { Redirect } from "expo-router";
+import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import SearchBar from '../../components/SearchBar';
+import ProductList from '../../components/ProductList';
 
-const Index = () => {
-    // Hack - this file is required to load by default so redirect
-    return <Redirect href="/home" />;
-};
-export default Index;
+export default function HomeScreen() {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    return (
+        <View style={styles.container}>
+            <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
+            <ScrollView>
+                <ProductList searchQuery={searchQuery} />
+            </ScrollView>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#fff',
+    },
+});
