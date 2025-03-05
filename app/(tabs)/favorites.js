@@ -1,13 +1,11 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ProductList from '../../components/ProductList';
 
 export default function FavoritesScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Favorites</Text>
-            <ScrollView>
-                <ProductList showFavorites={true} />
-            </ScrollView>
+            <ProductList showFavorites={true} />
         </View>
     );
 }

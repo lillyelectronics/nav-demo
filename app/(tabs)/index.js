@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import SearchBar from '../../components/SearchBar';
 import ProductList from '../../components/ProductList';
@@ -9,9 +9,7 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
-            <ScrollView>
-                <ProductList searchQuery={searchQuery} />
-            </ScrollView>
+            <ProductList searchQuery={searchQuery} />
         </View>
     );
 }

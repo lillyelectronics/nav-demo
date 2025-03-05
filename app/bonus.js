@@ -1,10 +1,11 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-export default function BonusScreen() {
-
+export default function HelpModal() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>BONUS! AM I MODAL?</Text>
+      <Text style={styles.title}>Help & About</Text>
+      <Text>This app helps you search for Amazon products and manage favorites.</Text>
+      <Text>Navigate using the tabs below and tap a product for details.</Text>
     </View>
   );
 }
@@ -12,11 +13,14 @@ export default function BonusScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    padding: 20,
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    color: '#fff',
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
