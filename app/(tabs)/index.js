@@ -14,6 +14,12 @@ export default function HomeScreen() {
         <View style={styles.container}>
             {/* Help Button to Open the Help Modal */}
             <Button title="Help" onPress={() => router.push('/bonus')} />
+            <Button 
+    title="Browse Categories" 
+    onPress={() => router.push('/category/Electronics')} 
+    color="#FFA500" 
+/>
+
 
             {/* ✅ Pass setProducts and addToFavorites to children components */}
             <SearchBar setProducts={setProducts} />

@@ -1,6 +1,9 @@
 import { View, Text, FlatList, Image, StyleSheet, Linking, TouchableOpacity, Button } from 'react-native';
+import { useRouter } from 'expo-router';
 
 const ProductList = ({ searchQuery, addToFavorites }) => {
+    const router = useRouter(); // ✅ Use Expo Router to navigate
+
     if (!searchQuery || searchQuery.length === 0) {
         return (
             <View style={styles.container}>
@@ -20,28 +23,30 @@ const ProductList = ({ searchQuery, addToFavorites }) => {
                 const productUrl = item.product_url; // Amazon product link
 
                 return (
-                    <View style={styles.card}>
-                        <Image source={{ uri: imageUrl }} style={styles.productImage} />
-                        
-                        <View style={styles.textContainer}>
-                            <Text style={styles.title}>{title}</Text>
-                            <Text style={styles.price}>{price}</Text>
+                    <TouchableOpacity onPress={() => router.push(`/product/${item.asin}?title=${title}&price=${price}&image=${imageUrl}&url=${productUrl}`)}>
+                        <View style={styles.card}>
+                            <Image source={{ uri: imageUrl }} style={styles.productImage} />
+                            
+                            <View style={styles.textContainer}>
+                                <Text style={styles.title}>{title}</Text>
+                                <Text style={styles.price}>{price}</Text>
 
-                            {/* ✅ Add to Favorites Button */}
-                            <Button 
-                                title="Add to Favorites" 
-                                onPress={() => addToFavorites(item)} 
-                                color="#FF6347" // Tomato color
-                            />
+                                {/* ✅ Add to Favorites Button */}
+                                <Button 
+                                    title="Add to Favorites" 
+                                    onPress={() => addToFavorites(item)} 
+                                    color="#FF6347"
+                                />
 
-                            {/* ✅ View on Amazon Button */}
-                            <Button 
-                                title="View on Amazon" 
-                                onPress={() => Linking.openURL(productUrl)} 
-                                color="#007AFF" // iOS blue
-                            />
+                                {/* ✅ View on Amazon Button */}
+                                <Button 
+                                    title="View on Amazon" 
+                                    onPress={() => Linking.openURL(productUrl)} 
+                                    color="#007AFF"
+                                />
+                            </View>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 );
             }}
         />

@@ -1,36 +1,34 @@
-import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Switch, StyleSheet } from 'react-native';
+import { useState } from 'react';
 
-export default function TabLayout() {
+export default function SettingsScreen() {
+    const [isDarkMode, setIsDarkMode] = useState(false); // ✅ Dark Mode State
+
     return (
-        <Tabs>
-            <Tabs.Screen
-                name="index"
-                options={{
-                    title: "Home",
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="home-outline" size={size} color={color} />
-                    ),
-                }}
+        <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+            <Text style={[styles.text, isDarkMode && styles.darkText]}>Dark Mode</Text>
+            <Switch
+                value={isDarkMode}
+                onValueChange={() => setIsDarkMode((prev) => !prev)}
             />
-            <Tabs.Screen
-                name="favorites"
-                options={{
-                    title: "Favorites",
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="heart-outline" size={size} color={color} />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="settings"
-                options={{
-                    title: "Settings",
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="settings-outline" size={size} color={color} />
-                    ),
-                }}
-            />
-        </Tabs>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+    },
+    darkContainer: {
+        backgroundColor: '#121212',
+    },
+    text: {
+        fontSize: 18,
+    },
+    darkText: {
+        color: '#fff',
+    },
+});
