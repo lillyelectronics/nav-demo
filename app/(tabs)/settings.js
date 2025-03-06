@@ -1,52 +1,34 @@
+import { View, Text, Switch, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { View, Text, Switch, SafeAreaView, StyleSheet } from 'react-native';
 
 export default function SettingsScreen() {
-    const [isDarkMode, setIsDarkMode] = useState(false); // Theme state
-
-    // Toggle theme switch
-    const toggleSwitch = () => setIsDarkMode((prev) => !prev);
+    const [isDarkMode, setIsDarkMode] = useState(false); // ✅ Dark Mode State
 
     return (
-        <SafeAreaView style={isDarkMode ? styles.darkSafe : styles.safe}>
-            <View style={styles.container}>
-                <Text style={isDarkMode ? styles.darkText : styles.text}>Dark Mode</Text>
-                <Switch
-                    trackColor={{ false: '#767577', true: '#81b0ff' }}
-                    thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
-                    onValueChange={toggleSwitch}
-                    value={isDarkMode}
-                />
-            </View>
-        </SafeAreaView>
+        <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+            <Text style={[styles.text, isDarkMode && styles.darkText]}>Dark Mode</Text>
+            <Switch
+                value={isDarkMode}
+                onValueChange={() => setIsDarkMode((prev) => !prev)}
+            />
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    safe: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    darkSafe: {
-        flex: 1,
-        backgroundColor: '#121212',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     container: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#fff',
+    },
+    darkContainer: {
+        backgroundColor: '#121212',
     },
     text: {
         fontSize: 18,
-        color: '#000',
-        marginBottom: 10,
     },
     darkText: {
-        fontSize: 18,
         color: '#fff',
-        marginBottom: 10,
     },
 });

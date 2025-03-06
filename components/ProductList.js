@@ -1,14 +1,6 @@
 import { View, Text, FlatList, Image, StyleSheet, Linking, TouchableOpacity, Button } from 'react-native';
-import { useState } from 'react';
 
-const ProductList = ({ searchQuery }) => {
-    const [favorites, setFavorites] = useState([]); // ✅ State to store favorite products
-
-    const addToFavorites = (product) => {
-        setFavorites([...favorites, product]);
-        console.log("Added to Favorites:", product.product_title);
-    };
-
+const ProductList = ({ searchQuery, addToFavorites }) => {
     if (!searchQuery || searchQuery.length === 0) {
         return (
             <View style={styles.container}>
@@ -22,7 +14,6 @@ const ProductList = ({ searchQuery }) => {
             data={searchQuery}
             keyExtractor={(item, index) => item.asin || index.toString()} // Use a unique key
             renderItem={({ item }) => {
-                // ✅ FIX: Use correct API keys
                 const title = item.product_title || "Title Not Available";
                 const price = item.product_price || "Price Not Available";
                 const imageUrl = item.product_photo || "https://via.placeholder.com/100";
@@ -36,14 +27,14 @@ const ProductList = ({ searchQuery }) => {
                             <Text style={styles.title}>{title}</Text>
                             <Text style={styles.price}>{price}</Text>
 
-                            {/* ✅ Add "Add to Favorites" Button */}
+                            {/* ✅ Add to Favorites Button */}
                             <Button 
                                 title="Add to Favorites" 
                                 onPress={() => addToFavorites(item)} 
                                 color="#FF6347" // Tomato color
                             />
 
-                            {/* ✅ Add "View on Amazon" Button */}
+                            {/* ✅ View on Amazon Button */}
                             <Button 
                                 title="View on Amazon" 
                                 onPress={() => Linking.openURL(productUrl)} 
@@ -69,12 +60,12 @@ const styles = StyleSheet.create({
         color: 'gray',
     },
     card: {
-        flexDirection: 'row', // ✅ Display image and text side by side
+        flexDirection: 'row',
         padding: 10,
         marginBottom: 10,
         borderRadius: 10,
         backgroundColor: '#fff',
-        elevation: 3, // ✅ Adds shadow on Android
+        elevation: 3,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -100,5 +91,4 @@ const styles = StyleSheet.create({
     },
 });
 
-// ✅ Ensure this is the last line:
 export default ProductList;
