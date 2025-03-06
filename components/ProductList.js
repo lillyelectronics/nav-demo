@@ -1,6 +1,14 @@
-import { View, Text, FlatList, Image, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, Linking, TouchableOpacity, Button } from 'react-native';
+import { useState } from 'react';
 
 const ProductList = ({ searchQuery }) => {
+    const [favorites, setFavorites] = useState([]); // ✅ State to store favorite products
+
+    const addToFavorites = (product) => {
+        setFavorites([...favorites, product]);
+        console.log("Added to Favorites:", product.product_title);
+    };
+
     if (!searchQuery || searchQuery.length === 0) {
         return (
             <View style={styles.container}>
@@ -14,23 +22,35 @@ const ProductList = ({ searchQuery }) => {
             data={searchQuery}
             keyExtractor={(item, index) => item.asin || index.toString()} // Use a unique key
             renderItem={({ item }) => {
-                // ✅ FIX: Match correct API keys
+                // ✅ FIX: Use correct API keys
                 const title = item.product_title || "Title Not Available";
                 const price = item.product_price || "Price Not Available";
                 const imageUrl = item.product_photo || "https://via.placeholder.com/100";
                 const productUrl = item.product_url; // Amazon product link
 
                 return (
-                    <TouchableOpacity onPress={() => Linking.openURL(productUrl)}>
-                        <View style={styles.card}>
-                            <Image source={{ uri: imageUrl }} style={styles.productImage} />
-                            
-                            <View style={styles.textContainer}>
-                                <Text style={styles.title}>{title}</Text>
-                                <Text style={styles.price}>{price}</Text>
-                            </View>
+                    <View style={styles.card}>
+                        <Image source={{ uri: imageUrl }} style={styles.productImage} />
+                        
+                        <View style={styles.textContainer}>
+                            <Text style={styles.title}>{title}</Text>
+                            <Text style={styles.price}>{price}</Text>
+
+                            {/* ✅ Add "Add to Favorites" Button */}
+                            <Button 
+                                title="Add to Favorites" 
+                                onPress={() => addToFavorites(item)} 
+                                color="#FF6347" // Tomato color
+                            />
+
+                            {/* ✅ Add "View on Amazon" Button */}
+                            <Button 
+                                title="View on Amazon" 
+                                onPress={() => Linking.openURL(productUrl)} 
+                                color="#007AFF" // iOS blue
+                            />
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 );
             }}
         />
