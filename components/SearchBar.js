@@ -6,7 +6,6 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
     const [loading, setLoading] = useState(false);
 
     const handleSearch = async () => {
-        // Prevent searching with an empty string
         if (!query || query.trim() === "") {
             console.log("Error: Search query is empty. Please enter a keyword.");
             return;
@@ -16,7 +15,6 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
         console.log(`Searching for: ${query}`);
 
         try {
-            // Ensure query is properly encoded
             const apiUrl = `https://real-time-amazon-data.p.rapidapi.com/search?query=${encodeURIComponent(query)}&page=1&country=US`;
             console.log(`Fetching data from: ${apiUrl}`);
 
@@ -35,7 +33,7 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
                 setProducts(data.data.products);
             } else {
                 console.log("No products found.");
-                setProducts([]); // Reset the product list if no results are found
+                setProducts([]);
             }
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -61,7 +59,10 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
                 onChangeText={setQuery}
             />
 
-            <Button title="Search" onPress={handleSearch} />
+            {/* Ensure the search button is inside a visible view */}
+            <View style={styles.buttonContainer}>
+                <Button title="Search" onPress={handleSearch} />
+            </View>
 
             {loading && <Text style={styles.loading}>Loading...</Text>}
         </View>
@@ -70,17 +71,23 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
         padding: 20,
+        alignItems: 'center', // Center content
+        justifyContent: 'center',
     },
     input: {
         height: 50,
+        width: "100%", // Ensures it takes full width
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
         paddingLeft: 10,
         borderRadius: 5,
+    },
+    buttonContainer: {
+        width: "100%", // Ensures the button is visible
+        alignItems: "center", // Centers the button horizontally
+        marginTop: 10, // Adds space below the input field
     },
     loading: {
         fontSize: 16,
@@ -89,5 +96,4 @@ const styles = StyleSheet.create({
     },
 });
 
-// ✅ Make sure this is the **last line** in the file:
 export default SearchBar;

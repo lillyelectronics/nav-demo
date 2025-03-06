@@ -5,7 +5,7 @@ import SearchBar from '../../components/SearchBar';
 import ProductList from '../../components/ProductList';
 
 export default function HomeScreen() {
-    const [searchQuery, setSearchQuery] = useState('');
+    const [products, setProducts] = useState([]); // ✅ Define products state
     const router = useRouter(); // Navigation hook
 
     return (
@@ -13,8 +13,11 @@ export default function HomeScreen() {
             {/* Help Button to Open the Help Modal */}
             <Button title="Help" onPress={() => router.push('/bonus')} />
 
-            <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
-            <ProductList searchQuery={searchQuery} />
+            {/* ✅ Corrected: Now passing `setProducts` to SearchBar */}
+            <SearchBar setProducts={setProducts} />
+
+            {/* ✅ Pass `products` to ProductList so it displays search results */}
+            <ProductList searchQuery={products} />
         </View>
     );
 }
