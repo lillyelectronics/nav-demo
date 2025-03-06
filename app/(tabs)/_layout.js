@@ -25,7 +25,17 @@ export default function TabLayout() {
                     ),
                 }}
             />
+
+            {/* Settings Tab (Dark Mode Toggle) */}
+            <Tabs.Screen
+                name="settings"
+                options={{
+                    title: "Settings",
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="settings-outline" size={size} color={color} />
+                    ),
+                }}
+            />
         </Tabs>
     );
 }
-
