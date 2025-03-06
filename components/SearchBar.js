@@ -27,13 +27,14 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
             });
 
             const data = await response.json();
+            console.log("Full API Response:", JSON.stringify(data, null, 2)); // ✅ Debugging log
 
             if (data && data.data && data.data.products) {
                 console.log(`Found ${data.data.products.length} products.`);
                 setProducts(data.data.products);
             } else {
                 console.log("No products found.");
-                setProducts([]);
+                setProducts([]); // Reset product list if no results are found
             }
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -59,10 +60,7 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
                 onChangeText={setQuery}
             />
 
-            {/* Ensure the search button is inside a visible view */}
-            <View style={styles.buttonContainer}>
-                <Button title="Search" onPress={handleSearch} />
-            </View>
+            <Button title="Search" onPress={handleSearch} />
 
             {loading && <Text style={styles.loading}>Loading...</Text>}
         </View>
@@ -71,23 +69,17 @@ const SearchBar = ({ setProducts, isDarkMode }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
-        alignItems: 'center', // Center content
+        flex: 1,
         justifyContent: 'center',
+        padding: 20,
     },
     input: {
         height: 50,
-        width: "100%", // Ensures it takes full width
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
         paddingLeft: 10,
         borderRadius: 5,
-    },
-    buttonContainer: {
-        width: "100%", // Ensures the button is visible
-        alignItems: "center", // Centers the button horizontally
-        marginTop: 10, // Adds space below the input field
     },
     loading: {
         fontSize: 16,
@@ -96,4 +88,5 @@ const styles = StyleSheet.create({
     },
 });
 
+// ✅ Ensure this is the last line:
 export default SearchBar;

@@ -1,37 +1,84 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import ProductCard from './ProductCard';
+import { View, Text, FlatList, Image, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 
-export default function ProductList({ searchQuery, showFavorites = false }) {
-    const products = [
-        { id: "1", title: "Example Product 1", image: "https://via.placeholder.com/150" },
-        { id: "2", title: "Example Product 2", image: "https://via.placeholder.com/150" }
-    ]; // Replace with real API data if available.
-
-    if (!products || products.length === 0) {
+const ProductList = ({ searchQuery }) => {
+    if (!searchQuery || searchQuery.length === 0) {
         return (
-            <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>No products found</Text>
+            <View style={styles.container}>
+                <Text style={styles.message}>No products found. Try another search.</Text>
             </View>
         );
     }
 
     return (
         <FlatList
-            data={products}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <ProductCard product={item} />}
+            data={searchQuery}
+            keyExtractor={(item, index) => item.asin || index.toString()} // Use a unique key
+            renderItem={({ item }) => {
+                // ✅ FIX: Match correct API keys
+                const title = item.product_title || "Title Not Available";
+                const price = item.product_price || "Price Not Available";
+                const imageUrl = item.product_photo || "https://via.placeholder.com/100";
+                const productUrl = item.product_url; // Amazon product link
+
+                return (
+                    <TouchableOpacity onPress={() => Linking.openURL(productUrl)}>
+                        <View style={styles.card}>
+                            <Image source={{ uri: imageUrl }} style={styles.productImage} />
+                            
+                            <View style={styles.textContainer}>
+                                <Text style={styles.title}>{title}</Text>
+                                <Text style={styles.price}>{price}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                );
+            }}
         />
     );
-}
+};
 
 const styles = StyleSheet.create({
-    emptyContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
     },
-    emptyText: {
+    message: {
         fontSize: 16,
-        color: "#555",
+        color: 'gray',
+    },
+    card: {
+        flexDirection: 'row', // ✅ Display image and text side by side
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        elevation: 3, // ✅ Adds shadow on Android
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    textContainer: {
+        flex: 1,
+        marginLeft: 10,
+    },
+    productImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 5,
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    price: {
+        fontSize: 14,
+        color: 'green',
+        marginTop: 5,
     },
 });
+
+// ✅ Ensure this is the last line:
+export default ProductList;

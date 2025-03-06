@@ -1,11 +1,11 @@
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import SearchBar from '../../components/SearchBar';
-import ProductList from '../../components/ProductList';
+import SearchBar from '../../components/SearchBar'; // ✅ Ensure this is a default import
+import ProductList from '../../components/ProductList'; // ✅ Ensure this is a default import
 
 export default function HomeScreen() {
-    const [products, setProducts] = useState([]); // ✅ Define products state
+    const [products, setProducts] = useState([]); // ✅ Ensure this exists
     const router = useRouter(); // Navigation hook
 
     return (
@@ -13,10 +13,10 @@ export default function HomeScreen() {
             {/* Help Button to Open the Help Modal */}
             <Button title="Help" onPress={() => router.push('/bonus')} />
 
-            {/* ✅ Corrected: Now passing `setProducts` to SearchBar */}
+            {/* ✅ Pass `setProducts` correctly */}
             <SearchBar setProducts={setProducts} />
 
-            {/* ✅ Pass `products` to ProductList so it displays search results */}
+            {/* ✅ Pass `products` correctly */}
             <ProductList searchQuery={products} />
         </View>
     );
